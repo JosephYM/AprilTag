@@ -1,0 +1,116 @@
+<launch>
+
+  <!-- 控制相机开启/关闭：0-关闭， 1-开启 -->
+  <!-- 或者通过启动命令控制：roslaunch apriltag_ros continuous_detection_multicam.launch camera1:=0 -->
+  <arg name="camera1"   default="1" />
+  <arg name="camera2"   default="1" />
+  <arg name="camera3"   default="1" />
+  <arg name="camera4"   default="1" />
+  <arg name="camera5"   default="0" />
+
+  <!-- Set other parameters -->
+  <arg name="launch_prefix" default="" /> <!-- set to value="gdbserver localhost:10000" for remote debugging -->
+  <arg name="image_topic" default="image_raw" />
+
+
+  <!-- cam_1 实时标定 -->
+  <group if="$(arg camera1)">
+    <arg name="index"                   value="1"/>
+    <arg name="node_namespace"		      value="apriltag_ros_continuous_cam_$(arg index)"/>
+    <arg name="camera_name"             value="/cam_$(arg index)/color"/>
+    <arg name="camera_frame"            value="cam_$(arg index)"/>
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="image_rect"            to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info"           to="$(arg camera_name)/camera_info" />
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="tag_detections_image"  to="$(arg camera_name)/tag_detections_image" />
+      <param name="publish_tag_detections_image" type="bool" value="true" />      <!-- default: false -->
+    </node>
+  </group>
+
+
+  <!-- cam_2 实时标定 -->
+  <group if="$(arg camera2)">
+    <arg name="index"                   value="2"/>
+    <arg name="node_namespace"		      value="apriltag_ros_continuous_cam_$(arg index)"/>
+    <arg name="camera_name"             value="/cam_$(arg index)/color"/>
+    <arg name="camera_frame"            value="cam_$(arg index)"/>
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <remap from="image_rect"            to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info"           to="$(arg camera_name)/camera_info" />
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="tag_detections_image"  to="$(arg camera_name)/tag_detections_image" />
+      <param name="publish_tag_detections_image" type="bool" value="true" />
+    </node>
+  </group>
+
+
+  <!-- cam_3 实时标定 -->
+  <group if="$(arg camera3)">
+    <arg name="index"                   value="3"/>
+    <arg name="node_namespace"		      value="apriltag_ros_continuous_cam_$(arg index)"/>
+    <arg name="camera_name"             value="/cam_$(arg index)/color"/>
+    <arg name="camera_frame"            value="cam_$(arg index)"/>
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <remap from="image_rect"            to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info"           to="$(arg camera_name)/camera_info" />
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="tag_detections_image"  to="$(arg camera_name)/tag_detections_image" />
+      <param name="publish_tag_detections_image" type="bool" value="true" />
+    </node>
+  </group>
+
+
+  <!-- cam_4 实时标定 -->
+  <group if="$(arg camera4)">
+    <arg name="index"                   value="4"/>
+    <arg name="node_namespace"		      value="apriltag_ros_continuous_cam_$(arg index)"/>
+    <arg name="camera_name"             value="/cam_$(arg index)/color"/>
+    <arg name="camera_frame"            value="cam_$(arg index)"/>
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <remap from="image_rect"            to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info"           to="$(arg camera_name)/camera_info" />
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="tag_detections_image"  to="$(arg camera_name)/tag_detections_image" />
+      <param name="publish_tag_detections_image" type="bool" value="true" />
+    </node>
+  </group>
+
+
+  <!-- cam_5 实时标定 -->
+  <group if="$(arg camera5)">
+    <arg name="index"                   value="5"/>
+    <arg name="node_namespace"		      value="apriltag_ros_continuous_cam_$(arg index)"/>
+    <arg name="camera_name"             value="/cam_$(arg index)/color"/>
+    <arg name="camera_frame"            value="cam_$(arg index)"/>
+
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <remap from="image_rect"            to="$(arg camera_name)/$(arg image_topic)" />
+      <remap from="camera_info"           to="$(arg camera_name)/camera_info" />
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="tag_detections_image"  to="$(arg camera_name)/tag_detections_image" />
+      <param name="publish_tag_detections_image" type="bool" value="true" />
+    </node>
+  </group>
+
+</launch>

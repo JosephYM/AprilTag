@@ -1,0 +1,101 @@
+<launch>
+  <arg name="tag_name"            default="tag_11" />
+  <arg name="arc_angle"           default="60.0"  />
+  <arg name="arc_radius"          default="1.0" />
+  <arg name="cam_number"          default="4"   />
+
+  <!-- 显示相机理论位置 -->
+  <arg name="show_theory_pose"    default="1" />
+  <group if="$(arg show_theory_pose)">
+    <param name="A"               type="double"       value="$(arg arc_angle)"  />
+    <param name="R"               type="double"       value="$(arg arc_radius)" />
+    <param name="N"               type="int"          value="$(arg cam_number)" />
+    <param name="Tag"             type="string"       value="$(arg tag_name)"   />
+    <node pkg="print_info" type="show_theory_pose_node_intel" name="show_theory_pose" output="screen" > </node>
+  </group>
+
+  <!-- 控制相机开启/关闭：0-关闭， 1-开启 -->
+  <!-- 或者通过启动命令控制：roslaunch apriltag_ros continuous_detection_multicam.launch camera1:=0 -->
+  <arg name="camera1"   default="1" />
+  <arg name="camera2"   default="1" />
+  <arg name="camera3"   default="1" />
+  <arg name="camera4"   default="1" />
+  <arg name="camera5"   default="0" />
+
+  <!-- Set other parameters -->
+  <arg name="launch_prefix" default="" /> <!-- set to value="gdbserver localhost:10000" for remote debugging -->
+
+  <group if="$(arg camera1)">
+    <arg     name="index"                 value="1"/>
+    <arg     name="node_namespace"		    value="print_info_of_tag_detections_cam_$(arg index)"/>
+    <arg     name="camera_name"           value="/cam_$(arg index)/color"/>
+    <node pkg="print_info" type="print_info_node_intel" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <param name="tag_axes"              value="$(arg tag_name)"   />
+      <!-- Remap topics from those used in code to those on the ROS network -->
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="detect_info"                to="$(arg camera_name)/detect_info" />
+    </node>
+  </group>
+
+
+  <group if="$(arg camera2)">
+    <arg     name="index"                 value="2"/>
+    <arg     name="node_namespace"		    value="print_info_of_tag_detections_cam_$(arg index)"/>
+    <arg     name="camera_name"           value="/cam_$(arg index)/color"/>
+    <node pkg="print_info" type="print_info_node_intel" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <param name="tag_axes"              value="$(arg tag_name)"   />
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="detect_info"                to="$(arg camera_name)/detect_info" />
+    </node>
+  </group>
+
+
+  <group if="$(arg camera3)">
+    <arg     name="index"                 value="3"/>
+    <arg     name="node_namespace"		    value="print_info_of_tag_detections_cam_$(arg index)"/>
+    <arg     name="camera_name"           value="/cam_$(arg index)/color"/>
+    <node pkg="print_info" type="print_info_node_intel" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <param name="tag_axes"              value="$(arg tag_name)"   />
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="detect_info"                to="$(arg camera_name)/detect_info" />
+    </node>
+  </group>
+
+
+  <group if="$(arg camera4)">
+    <arg     name="index"                 value="4"/>
+    <arg     name="node_namespace"		    value="print_info_of_tag_detections_cam_$(arg index)"/>
+    <arg     name="camera_name"           value="/cam_$(arg index)/color"/>
+    <node pkg="print_info" type="print_info_node_intel" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <param name="tag_axes"              value="$(arg tag_name)"   />
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="detect_info"                to="$(arg camera_name)/detect_info" />
+    </node>
+  </group>
+
+
+  <!-- group if="$(arg camera5)">
+    <arg     name="index"                 value="5"/>
+    <arg     name="node_namespace"		    value="print_info_of_tag_detections_cam_$(arg index)"/>
+    <arg     name="camera_name"           value="/cam_$(arg index)/color"/>
+    <node pkg="print_info" type="print_info_node_intel" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+      <param name="tag_axes"              value="$(arg tag_name)"   />
+      <remap from="tag_detections"        to="$(arg camera_name)/tag_detections" />
+      <remap from="detect_info"                to="$(arg camera_name)/detect_info" />
+    </node>
+  </group -->
+
+
+  <!-- 轮询显示 -->
+  <!-- <group>
+    <node pkg="print_info" type="polling_display_node_intel" name="polling_display" output="screen" >
+    </node>
+  </group> -->
+
+  <!-- 启动配置好的rviz，减少了手动操作 -->
+  <!-- <group>
+    <node pkg="rviz" type="rviz" name="rviz_default" args="-d $(find print_info)/config/default.rviz" > 
+    </node>
+  </group> -->
+
+</launch>

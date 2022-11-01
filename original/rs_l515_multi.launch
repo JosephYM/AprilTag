@@ -1,0 +1,107 @@
+<launch>
+  <!-- 相机1 -->
+  <arg name="serial_no_camera1"    			default="00000000f1371734"/>  <!-- 修改： 改成使用相机的序列号，序列号通过sdk中rs-sensor-control获取 -->
+  <arg name="camera1"              			default="cam_1"/>
+  <arg name="tf_prefix_camera1"         default="$(arg camera1)"/>
+  
+  <!-- 相机2 -->
+  <arg name="serial_no_camera2"    			default="00000000f1371815"/>
+  <arg name="camera2"              			default="cam_2"/>
+  <arg name="tf_prefix_camera2"         default="$(arg camera2)"/>
+
+  <!-- 相机3 -->
+  <!-- <arg name="serial_no_camera3"    			default="00000000f1371773"/>
+  <arg name="camera3"              			default="cam_3"/>
+  <arg name="tf_prefix_camera3"         default="$(arg camera3)"/> -->
+  <arg name="serial_no_camera3"    			default="00000000f1371773"/>
+  <arg name="camera3"              			default="cam_3"/>
+  <arg name="tf_prefix_camera3"         default="$(arg camera3)"/>
+
+  <!-- 相机4 -->
+  <!-- <arg name="serial_no_camera4"    			default="00000000f1370282"/>
+  <arg name="camera4"              			default="cam_4"/>
+  <arg name="tf_prefix_camera4"         default="$(arg camera4)"/> -->
+  <arg name="serial_no_camera4"    			default="00000000f1370282"/>
+  <arg name="camera4"              			default="cam_4"/>
+  <arg name="tf_prefix_camera4"         default="$(arg camera4)"/>
+
+  <!-- 相机N -->
+  <!-- <arg name="serial_no_cameraN"    			default="相机序列号"/>
+  <arg name="cameraN"              			default="cam_N"/>
+  <arg name="tf_prefix_cameraN"         default="$(arg cameraN)"/> -->
+
+  <arg name="initial_reset"             default="false"/>
+  <arg name="reconnect_timeout"         default="6.0"/>
+  
+  <!-- 增加图像分辨率控制接口 -->
+  <arg name="color_width"               default="1920"/>
+  <arg name="color_height"              default="1080"/>
+  <arg name="enable_color"              default="true"/>
+
+  <!-- 启动相机1 -->
+  <group ns="$(arg camera1)">
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="serial_no"             value="$(arg serial_no_camera1)"/>
+      <arg name="tf_prefix"         		value="$(arg tf_prefix_camera1)"/>
+      <arg name="initial_reset"         value="$(arg initial_reset)"/>
+      <arg name="color_width"              value="$(arg color_width)"/>
+      <arg name="color_height"             value="$(arg color_height)"/>
+      <arg name="enable_color"             value="$(arg enable_color)"/>
+      <!-- <arg name="reconnect_timeout"     value="$(arg reconnect_timeout)"/> -->
+    </include>
+  </group>
+
+  <!-- 启动相机2 -->
+  <group ns="$(arg camera2)">
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="serial_no"             value="$(arg serial_no_camera2)"/>
+      <arg name="tf_prefix"		          value="$(arg tf_prefix_camera2)"/>
+      <arg name="initial_reset"         value="$(arg initial_reset)"/>
+      <arg name="color_width"              value="$(arg color_width)"/>
+      <arg name="color_height"             value="$(arg color_height)"/>
+      <arg name="enable_color"             value="$(arg enable_color)"/>
+      <!-- <arg name="reconnect_timeout"     value="$(arg reconnect_timeout)"/> -->
+    </include>
+  </group>
+
+  <!-- 启动相机3 -->
+  <group ns="$(arg camera3)">
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="serial_no"             value="$(arg serial_no_camera3)"/>
+      <arg name="tf_prefix"         		value="$(arg tf_prefix_camera3)"/>
+      <arg name="initial_reset"         value="$(arg initial_reset)"/>      
+      <arg name="color_width"              value="$(arg color_width)"/>
+      <arg name="color_height"             value="$(arg color_height)"/>
+      <arg name="enable_color"             value="$(arg enable_color)"/>
+      <!-- <arg name="reconnect_timeout"     value="$(arg reconnect_timeout)"/> -->
+    </include>
+  </group>
+
+  <!-- 启动相机4 -->
+  <group ns="$(arg camera4)">
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="serial_no"             value="$(arg serial_no_camera4)"/>
+      <arg name="tf_prefix"         		value="$(arg tf_prefix_camera4)"/>
+      <arg name="initial_reset"         value="$(arg initial_reset)"/>
+      <arg name="color_width"              value="$(arg color_width)"/>
+      <arg name="color_height"             value="$(arg color_height)"/>
+      <arg name="enable_color"             value="$(arg enable_color)"/>
+      <!-- <arg name="reconnect_timeout"     value="$(arg reconnect_timeout)"/> -->
+    </include>
+  </group>
+
+  <!-- 启动相机N -->
+  <!-- <group ns="$(arg cameraN)">
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="serial_no"             value="$(arg serial_no_cameraN)"/>
+      <arg name="tf_prefix"         		value="$(arg tf_prefix_cameraN)"/>
+      <arg name="initial_reset"         value="$(arg initial_reset)"/>
+      <arg name="color_width"              value="$(arg color_width)"/>
+      <arg name="color_height"             value="$(arg color_height)"/>
+      <arg name="enable_color"             value="$(arg enable_color)"/>
+    </include>
+  </group> -->
+
+  <!-- TODO: 精简group  -->
+  
+</launch>
