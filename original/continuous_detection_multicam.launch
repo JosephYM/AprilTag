@@ -6,7 +6,7 @@
   <arg name="camera2"   default="1" />
   <arg name="camera3"   default="1" />
   <arg name="camera4"   default="1" />
-  <arg name="camera5"   default="0" />
+  <arg name="camera5"   default="1" />
 
   <!-- Set other parameters -->
   <arg name="launch_prefix" default="" /> <!-- set to value="gdbserver localhost:10000" for remote debugging -->
@@ -20,8 +20,8 @@
     <arg name="camera_name"             value="/cam_$(arg index)/color"/>
     <arg name="camera_frame"            value="cam_$(arg index)"/>
 
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml" ns="$(arg node_namespace)" />
 
     <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
       <!-- Remap topics from those used in code to those on the ROS network -->
@@ -41,8 +41,8 @@
     <arg name="camera_name"             value="/cam_$(arg index)/color"/>
     <arg name="camera_frame"            value="cam_$(arg index)"/>
 
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml" ns="$(arg node_namespace)" />
 
     <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
       <remap from="image_rect"            to="$(arg camera_name)/$(arg image_topic)" />
@@ -61,8 +61,8 @@
     <arg name="camera_name"             value="/cam_$(arg index)/color"/>
     <arg name="camera_frame"            value="cam_$(arg index)"/>
 
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml" ns="$(arg node_namespace)" />
 
     <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
       <remap from="image_rect"            to="$(arg camera_name)/$(arg image_topic)" />
@@ -81,8 +81,8 @@
     <arg name="camera_name"             value="/cam_$(arg index)/color"/>
     <arg name="camera_frame"            value="cam_$(arg index)"/>
 
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml" ns="$(arg node_namespace)" />
 
     <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
       <remap from="image_rect"            to="$(arg camera_name)/$(arg image_topic)" />
@@ -101,8 +101,8 @@
     <arg name="camera_name"             value="/cam_$(arg index)/color"/>
     <arg name="camera_frame"            value="cam_$(arg index)"/>
 
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/settings.yaml" ns="$(arg node_namespace)" />
-    <rosparam command="load" file="$(find apriltag_ros)/config/IntelLab/tags.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml" ns="$(arg node_namespace)" />
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml" ns="$(arg node_namespace)" />
 
     <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
       <remap from="image_rect"            to="$(arg camera_name)/$(arg image_topic)" />

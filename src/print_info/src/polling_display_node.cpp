@@ -12,7 +12,7 @@ using std::endl;
 class PollingDisplay
 {
 public:
-    PollingDisplay():it(n), index(-1), poll_id(0)
+    PollingDisplay():it(n), index(-1), poll_id(0), rev(false)
     {
         index_vec = std::vector<bool>(topic_number + 1, false);
         topic_vec = std::vector<std::string>(topic_number);
@@ -20,7 +20,7 @@ public:
         for (int i=0; i<topic_number; ++i)
             topic_vec[i] = "/cam_" + std::to_string(i+1) + "/color/tag_detections_image";
 
-        cv::namedWindow("view");
+        cv::namedWindow("view",cv::WINDOW_NORMAL);
         cv::startWindowThread();
 
         // 构造图像话题订阅对象
@@ -43,8 +43,8 @@ public:
 
 
 
-        // image_transport::Subscriber ImageSub_0 = it.subscribe(msgs_vec[0], 20, &PollingDisplay::imageCallback1, this);
-        // image_transport::Subscriber ImageSub_1 = it.subscribe(msgs_vec[1], 20, &PollingDisplay::imageCallback2, this);
+        //image_transport::Subscriber ImageSub_0 = it.subscribe(msgs_vec[0], 20, &PollingDisplay::imageCallback1, this);
+        //image_transport::Subscriber ImageSub_1 = it.subscribe(msgs_vec[1], 20, &PollingDisplay::imageCallback2, this);
         keysTimer = n.createTimer(ros::Duration(0.5), &PollingDisplay::keysTimerCallback, this);
         showTimer = n.createTimer(ros::Duration(0.5), &PollingDisplay::showTimerCallback, this);
         while (ros::ok())
@@ -52,6 +52,7 @@ public:
             ros::spinOnce();
             if(!img2show.empty())
             {
+		cv::resize(img2show, img2show, cv::Size(960, 540));
                 cv::imshow("view", img2show);
             }
         }
@@ -93,6 +94,8 @@ public:
     void keysTimerCallback(const ros::TimerEvent&)
     {
         int k_value = cv::waitKey(500);
+        
+        std::cout<<"k_value_test = "<<k_value<<std::endl;
         
         if (k_value != -1)
         {
@@ -148,9 +151,15 @@ public:
         std::sort(show_index_vec.begin(), show_index_vec.end());
         show_index_vec.erase(unique(show_index_vec.begin(), show_index_vec.end()), show_index_vec.end());
 
-
         if (!show_index_vec.empty())
         {
+            if((poll_id+1)%show_index_vec.size() == 0){
+		    rev = !rev;
+            }
+	    if(rev){
+		    reverse(show_index_vec.begin(), show_index_vec.end());
+	    }
+		    
             // 打印提示 显示列表
             cout << "Show Camera list: ";
             for (auto id : show_index_vec)
@@ -158,6 +167,7 @@ public:
             cout << endl;
 
             poll_id = (poll_id+1) % show_index_vec.size();
+	    cout<<"poll_id = "<<poll_id<<endl;
             index = show_index_vec[poll_id];
             cout << " Polling Show camera " << index + 1 << endl;
         }
@@ -176,6 +186,7 @@ private:
     static int topic_number;
     int index;
     int poll_id;
+    int rev;
     std::vector<std::string> topic_vec;         // 需要订阅的话题数组
     std::vector<bool>        index_vec;         // 相机的显示状态数组
     std::vector<int>         show_index_vec;    // 轮询显示的相机列表

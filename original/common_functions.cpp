@@ -334,7 +334,6 @@ AprilTagDetectionArray TagDetector::detectTags (
     Eigen::Matrix4d transform = getRelativeTransform(standaloneTagObjectPoints,
                                                      standaloneTagImagePoints,
                                                      fx, fy, cx, cy);
-
     // 原始：位姿表示tag到相机
     // 修改：位姿表示相机到tag
     // R * Pg + t = Pc  -->  Pg = R^-1 * (Pc - t)

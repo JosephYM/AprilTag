@@ -8,7 +8,26 @@
 #include <visualization_msgs/MarkerArray.h>
 #include "print_info/utils.hpp"
 #include "apriltag_ros/AprilTagDetectionArray.h"
+#include <queue>
 
+class MovingAverage {
+public:
+    /** Initialize your data structure here. */
+    std::queue<double> q;
+    double pre = 0;
+    double next(double val) {
+        q.push(val);
+        if(q.size() > 30){
+            double tmp = q.front();
+            pre = pre - tmp + val;
+            q.pop();
+            return (double) pre / 30;
+        }
+        pre += val;
+        return (double) pre / q.size();
+    }
+};
+ 
 class PrintInfo
 {
 public:
@@ -66,7 +85,6 @@ public:
         qw = detectInfo->detections[0].pose.pose.pose.orientation.w;
         // std::cout << "qx, qy, qz, qw: " << qx << " " << qy << " " << qz << " " << qw << std::endl;
 
-        // 修改：内旋（测试可行，参考马岳），绕相机自身的坐标系（cam坐标系的x，y，z轴）依次旋转一定角度
         // Eigen::Quaterniond q (qw, qx, qy, qz);
         // Eigen::Matrix3d rot = utils::Quaternion2Matrix(q);
         // Eigen::Vector3d euler = utils::Matrix2EulerInternal(rot);
@@ -77,22 +95,15 @@ public:
         Eigen::Matrix3d rot = q.toRotationMatrix();
         Eigen::Vector3d euler = utils::Matrix2EulerExternal(rot);
 
-
-        geometry_msgs::Pose pose;
-        pose.position.x = tx + 0.03;
-        pose.position.y = ty + 0.0;
-        pose.position.z = tz + 0.0;
-        pose.orientation.x = qx;
-        pose.orientation.y = qy;
-        pose.orientation.z = qz;
-        pose.orientation.w = qw;
-
+	double tx_ma = t1_ma.next(tx);
+	double ty_ma = t2_ma.next(ty);
+	double tz_ma = t3_ma.next(tz);
         // 可视化打印控制：
         // 1、设置换行打印，区分平移与旋转
         // 2、设置小数点后位置
         // 3、设置总位数，并用空格填补
         Eigen::Vector3f info_trans, info_euler;
-        info_trans << tx * 1000, ty * 1000, tz * 1000;
+        info_trans << tx_ma * 1000, ty_ma * 1000, tz_ma * 1000;
         info_euler << euler[0]/M_PI * 180, euler[1]/M_PI * 180, euler[2]/M_PI * 180;
         std::ostringstream str;
         str.precision(1);
@@ -102,7 +113,15 @@ public:
             << std::fixed << std::setw(6) << std::setfill(' ') << info_euler[0] << std::endl 
             << std::fixed << std::setw(6) << std::setfill(' ') << info_euler[1] << std::endl 
             << std::fixed << std::setw(6) << std::setfill(' ') << info_euler[2] << std::endl;
-        
+
+        geometry_msgs::Pose pose;
+        pose.position.x = tx_ma + 0.05;
+        pose.position.y = ty_ma + 0.05;
+        pose.position.z = tz_ma + 0.05;
+        pose.orientation.x = qx;
+        pose.orientation.y = qy;
+        pose.orientation.z = qz;
+        pose.orientation.w = qw;
         text_view_facing.text = str.str();
         text_view_facing.pose = pose;
 
@@ -124,13 +143,14 @@ private:
     ros::NodeHandle n; 
     ros::Publisher  markerArrayPub;
     ros::Subscriber detectSub;
-
+    MovingAverage t1_ma;
+    MovingAverage t2_ma;
+    MovingAverage t3_ma;
     visualization_msgs::Marker text_view_facing;
     visualization_msgs::Marker line_strip;
     visualization_msgs::MarkerArray marker_array;
 };
 
- 
 int main(int argc, char **argv)
 {
     // Initiate ROS

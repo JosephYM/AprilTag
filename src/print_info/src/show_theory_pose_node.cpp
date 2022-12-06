@@ -24,7 +24,7 @@ public:
         this->A = A / 180.0 * M_PI;
         // cout << "A: " << this->A << " R: " << this->R << " N: " << this->N << endl;
 
-        computeInitPose();
+         computeInitPose();
 
         staticPubTF();
 
@@ -157,7 +157,7 @@ public:
             angle_with_z[i] = left_boundary_anlge - i * delte_angle;
 
             // 2、相对tag坐标系的坐标位置
-            positions[i] << -R * sin(angle_with_z[i]), 0.0, R * cos(angle_with_z[i]);
+            positions[i] << -R * sin(angle_with_z[i]), -0.2 , R * cos(angle_with_z[i]);
 
             // 3、相对tag坐标系的欧拉角与四元数，欧拉角可以直观获取，但tf需要四元数
             Eigen::Vector3d euler (M_PI, angle_with_z[i], 0.0);

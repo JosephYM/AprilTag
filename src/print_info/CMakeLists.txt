@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(OpenCV 4.0 REQUIRED)
+message(STATUS "${OpenCV_INCLUDE_DIRS}")
 message(STATUS "${OpenCV_LIBRARIES}")
 
 find_package(Eigen3)
@@ -40,6 +41,7 @@ target_link_libraries(print_info_node_intel
 )
 
 target_link_libraries(polling_display_node_intel
+  /usr/lib/x86_64-linux-gnu/libopencv_core.so
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
   Eigen3::Eigen
